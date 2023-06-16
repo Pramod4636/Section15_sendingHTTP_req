@@ -24,17 +24,22 @@ const  fetchMoviesHandler  = useCallback (  async  () => {
   }
   
   const data = await response.json();
+ 
+  const loadedMovies = [];
 
-
-  const transformedMovies = data.results.map( movieData => {
-      return {id : movieData.episode_id ,
-          title : movieData.title ,
-          openingText : movieData.opening_crawl,
-          releaseDate : movieData.release_data
-      }
-    }) ;
+  console.log(data);
   
-   setMovies(transformedMovies);
+  for(const key in data ) {
+     loadedMovies.push({
+      id : key , 
+      title : data[key].title,
+      openingText : data[key].openingText ,
+      releaseDate : data[key].releaseDate 
+     })
+  }
+ 
+  
+   setMovies(loadedMovies);
    setIsLoading(false);
   } 
   catch(error)
