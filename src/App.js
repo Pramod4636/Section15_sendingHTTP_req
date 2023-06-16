@@ -1,5 +1,5 @@
 import React , {useState , useEffect , useCallback } from 'react';
-
+import AddMovie from './components/AddMovie';
 import MoviesList from './components/MoviesList';
 import './App.css';
 
@@ -17,7 +17,7 @@ const  fetchMoviesHandler  = useCallback (  async  () => {
   try{
 
   
-  const response = await fetch('https://swapi.dev/api/films') ; // URL wrong then json convert karata error 
+  const response = await fetch('https://react-http-264e0-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json') ; // URL wrong then json convert karata error 
   
   if(!response.ok){
      throw new Error('Something is wrong ');
@@ -51,6 +51,9 @@ useEffect( ()=> {
 , [fetchMoviesHandler]) ; 
 
 
+ function addMovieHandler(movie) {
+    console.log(movie);
+  }
 
 
 let content = <p> Found no movies </p> ; 
@@ -75,6 +78,9 @@ if(error)
 
   return (
     <React.Fragment>
+      <section>
+        <AddMovie onAddMovie={addMovieHandler} />
+      </section>
       <section>
         <button onClick={ fetchMoviesHandler}>Fetch Movies</button>
       </section>
