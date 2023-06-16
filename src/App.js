@@ -6,13 +6,23 @@ import './App.css';
 function App() {
   const [movies,setMovies] = useState([]);
   const [isLoading ,setIsLoading]  = useState(false);
-
+  const [error , setError] = useState(null);
 
 async function fetchMoviesHandler (){
-
+  setError("null");
   setIsLoading(true);
-  const response = await fetch('https://swapi.dev/api/films') ; 
+ 
+  try{
+
+  
+  const response = await fetch('https://swapi.dev/api/film') ; // URL wrong then json convert karata error 
+  
+  if(!response.ok){
+     throw new Error('Something is wrong ');
+  }
+  
   const data = await response.json();
+
 
   const transformedMovies = data.results.map( movieData => {
       return {id : movieData.episode_id ,
@@ -22,9 +32,13 @@ async function fetchMoviesHandler (){
       }
     }) ;
   
-  setMovies(transformedMovies);
+   setMovies(transformedMovies);
    setIsLoading(false);
-
+  } 
+  catch(error)
+  {
+      setError(error.message);
+  }
 }
 
   return (
@@ -33,9 +47,10 @@ async function fetchMoviesHandler (){
         <button onClick={ fetchMoviesHandler}>Fetch Movies</button>
       </section>
       <section>
-        { !isLoading && movies.length > 0  && <MoviesList movies={movies} /> } 
-        { isLoading && <p> Loading ...... </p> } 
-        {!isLoading && movies.length === 0 && <p> No movies found </p> }
+        { !isLoading && movies.length > 0 && !error  && <MoviesList movies={movies} /> } 
+        { isLoading && !error && <p> Loading ...... </p> } 
+        { error && <p> {error} </p>}
+        {!isLoading && movies.length === 0 && !error && <p> No movies found </p> }
       </section>
     </React.Fragment>
   );
