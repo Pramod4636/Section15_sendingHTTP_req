@@ -51,8 +51,20 @@ useEffect( ()=> {
 , [fetchMoviesHandler]) ; 
 
 
- function addMovieHandler(movie) {
-    console.log(movie);
+ async function addMovieHandler(movie) {
+    
+   const response = await fetch( 'https://react-http-264e0-default-rtdb.asia-southeast1.firebasedatabase.app/movies.json' , {
+      method : 'POST',
+      body : JSON.stringify(movie),
+      headers : {
+        'content-Type' : 'application/json'
+      }      
+    }) ;
+
+    const data = await  response.json();
+
+    console.log(data);
+
   }
 
 
